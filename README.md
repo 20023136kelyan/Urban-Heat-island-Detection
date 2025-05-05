@@ -1,0 +1,65 @@
+Urban Heat Island Data Challenge: Ernst & Young
+Submitted By: Emily Brunner Himanshu Bundel Vinicius Cauneto Kelyan Edou Engone Victoria Angela Mendoza
+
+April 25th, 2025 BCH-7815 Business Challenge III Prof. Chase Kusterer
+
+Master of Business Analytics Hult International Business School
+
+1. Introduction
+The Urban Heat Island (UHI) Data Challenge, hosted by EY, focuses on predicting patterns of urban heat using satellite imagery and geospatial analysis. UHI refers to the phenomenon where urban areas experience higher temperatures than surrounding rural zones due to factors like surface materials, building density, and lack of vegetation. While the challenge is open in terms of how results are applied, our team chose to frame our analysis from a public health perspective, recognizing that extreme urban heat disproportionately affects vulnerable populations — including the elderly, young children, outdoor workers, and underserved communities.
+
+The dataset provided includes over 34,000 observations from Montgomery County, Maryland, with UHI index values derived from ground-based temperature data. Predictor variables are sourced from satellite data, including Sentinel-2 spectral bands, Landsat-derived land surface temperature (LST), and digital elevation data. We also engineered features such as the Enhanced Vegetation Index (EVI), Modified Normalized Difference Water Index (MNDWI), and Normalized Difference Impervious Surface Index (NDISI) to better represent vegetation health, surface moisture, and built environments.
+
+Importantly, while the model is trained on Montgomery County data, its performance is evaluated on a separate test set from New York. This setup challenges participants to build models that are not only accurate locally but also robust and generalizable across different urban geographies. By doing so, the challenge encourages scalable solutions that can support city planners and public health officials in identifying and addressing urban heat vulnerabilities worldwide.
+
+2. Analysis and Code
+Our modeling workflow began with preparing a dataset combining Sentinel-2 spectral bands, Landsat-derived land surface temperature (LST), and elevation data. To improve environmental interpretability, we engineered several features: the Enhanced Vegetation Index (EVI), Modified Normalized Difference Water Index (MNDWI), and Normalized Difference Impervious Surface Index (NDISI). These features captured vegetation health, surface water, and urban impermeability, which are key contributors to UHI intensity.
+
+We handled missing values, removed outliers, and excluded geographic coordinates to encourage generalization beyond Montgomery County. The model was built using a random forest regressor, chosen for its ability to model non-linear relationships and provide feature importance scores. Hyperparameters were also optimized using random search with cross-validation, allowing us to tune model complexity while keeping computational costs manageable.
+
+After training on 34,000+ observations from Montgomery County, the model was tested on an unseen New York dataset. It achieved strong predictive performance, with an R² score of 0.9456 on the final dataset (with LST and elevation). Feature importance analysis revealed that Sentinel-2 Band 01 (Coastal Aerosol), Land Surface Temperature (LST), and NDISI were the most influential predictors. Elevation and EVI followed closely, affirming that surface composition, vegetation, and terrain all play key roles in shaping urban heat outcomes. These insights were both expected and actionable, aligning closely with known environmental drivers of the UHI effect (Qin et al., 2018; Liu et al., 2024; Weng, Lu, & Schubring, 2004; to be further discussed in the Recommendations section).
+
+While the model performed well, it is important to note some limitations. First, the data was based on a single collection date, and does not account for daily or even seasonal variations. Second, the model does not include human-centric variables such as building density, cooling infrastructure, or energy usage, which may further influence local temperature variability. Including such features in future iterations could enhance accuracy in heat resilience planning.
+
+Overall, this model provides a scalable, interpretable tool for identifying UHI hotspots using open-access satellite data—supporting data-driven public health planning and climate adaptation.
+
+3. Top Three Actionable Recommendations
+Our model identified several key environmental features that most strongly predict Urban Heat Island (UHI) intensity. The top contributor was Sentinel-2 Band 01 (Coastal Aerosol), which may reflect atmospheric and particulate effects tied to urban haze and surface reflectance. Land Surface Temperature (LST), derived from Landsat data, was the second most important predictor, directly capturing surface-level heat signatures. The Normalized Difference Impervious Surface Index (NDISI) ranked third, highlighting how dense, non-porous surfaces retain and radiate heat. Elevation, Enhanced Vegetation Index (EVI), and water-related indices like MNDWI also played important roles, emphasizing the cooling benefits of vegetation and proximity to water. These variables offer not only scientific insight but also direction for real-world interventions.
+
+1. Incorporate Airflow and Topography Insights to Design Smarter Urban Cooling Strategies
+Sentinel-2 Band 01 (Coastal Aerosol), the top-ranked predictor in our model, acts as a proxy for atmospheric haze, stagnation, or low ventilation zones in dense urban areas. Combined with elevation data, which also ranked highly, these features suggest that heat can be exacerbated in low-lying urban areas where polluted or stagnant air traps warmth near the surface. We recommend that urban planners and public health agencies integrate these spatial signals into heat mitigation plans by identifying “urban heat traps”: areas with low elevation and high aerosol reflectance. These zones are ideal candidates for interventions like ventilation corridors, reflective surfaces, or vegetation buffers that promote airflow. Research shows that integrating airflow-enhancing features into city design (like green corridors and open space connectivity) can meaningfully reduce heat buildup and improve urban resilience (Emmanuel & Krüger, 2012; Kumar et al., 2024).
+
+2. Use High-LST and High-NDISI Zones to Direct Emergency Cooling Services
+Areas with high predicted UHI values, particularly those marked by elevated LST and impervious surface coverage (NDISI), align with high-risk zones for heat stress. We recommend public health officials incorporate these model outputs into summer preparedness and emergency response strategies. Specific interventions might include mobile cooling stations, public misting tents, and targeted outreaches during heatwaves. Priority should be given to low-lying areas with dense infrastructure and little access to shade or ventilation. Cross-referencing UHI predictions with demographic data can help ensure life-saving resources reach at-risk populations like older adults, outdoor workers, and low-income families. This approach aligns with strategies outlined in heat and air quality resilience plans, similar to that of San Francisco, which emphasizes targeted interventions in vulnerable neighborhoods (City and County of San Francisco, 2023).
+
+3. Launch Urban Greening and Surface Cooling Projects in Low-EVI, High-NDISI Areas
+Our model confirmed that vegetation cover (EVI) and surface permeability (NDISI) are strongly linked to lower urban heat exposure. This finding aligns with studies demonstrating that urban greenery significantly lowers land surface temperatures and improves public health outcomes, especially during extreme heat events (Norton et al., 2015; Gunawardena et al., 2017). Municipal governments should then identify areas with low EVI and high NDISI to prioritize for tree planting, green roofs, pocket parks, or the use of reflective or permeable materials. These zones are typically highly paved, built-up areas where surface cooling interventions can make the greatest difference. Monitoring EVI improvements over time through Sentinel-2 imagery would also enable data-backed assessments of green infrastructure ROI.
+
+4. Conclusion
+This project shows how satellite-based environmental features can be used with machine learning to predict Urban Heat Island (UHI) intensity at a fine spatial scale. By focusing on generalizable variables like LST, EVI, NDISI, elevation, and aerosol reflectance (B01), we built a model that performed strongly across two different urban settings, with R² scores above 0.94. The most important features in our model directly informed practical, data-driven recommendations—such as prioritizing impervious and low-vegetation areas for cooling and greening, and identifying low-elevation, high-aerosol zones as potential urban heat traps.
+
+These findings provide not just predictive value but clear guidance for public health and urban planning. While the model doesn’t account for social or temporal variables, it offers a scalable, interpretable tool that cities can use to target heat mitigation where it's needed most. With climate change increasing urban heat risks, models like this can support more equitable and proactive responses.
+
+5. Reflection on the Challenge
+Working on this challenge was both rewarding and humbling. One of the biggest hurdles was dealing with unfamiliar data formats, especially the large TIFF files. The steep learning curve, tight timeline, and long code execution times made debugging difficult and time-consuming. Many of us had to invest extra hours doing trial and error just to get basic preprocessing to work, especially since the large datasets couldn’t easily be split across machines.
+
+To manage execution time and system limitations, we had to simplify the model and reduce the size of the input data. That meant removing several of the engineered features we had initially included in earlier versions of the model. Interestingly, this simplification led to a drastic improvement in performance: our R² score rose significantly once the model focused on fewer, more predictive features. At the same time, this came at the cost of interpretability and granularity. With fewer variables in the mix, more of the variation was explained by intercepts, making it harder to pinpoint specific environmental drivers behind UHI effects.
+
+We also lost some depth in understanding how the UHI index works at a finer scale, insights we had originally hoped to preserve. That said, the challenge still pushed us to think critically about how to balance accuracy, complexity, and feasibility in applied modeling. Even in its simplified form, this project underscored the value of data science for public health, and reminded us that technical trade-offs are often an unavoidable part of real-world work.
+
+Bibliography
+City and County of San Francisco. (2023). Heat and Air Quality Resilience Plan. Retrieved from https://www.sf.gov/news--san-francisco-releases-plan-prepare-extreme-heat-and-air-quality-events
+
+Emmanuel, R., & Krüger, E. (2012). Urban heat island and its impact on climate change resilience in a shrinking city: The case of Glasgow, UK. Building and Environment, 53, 137–149. https://doi.org/10.1016/j.buildenv.2012.01.020
+
+Gunawardena, K. R., Wells, M. J., & Kershaw, T. (2017). Utilising green and bluespace to mitigate urban heat island intensity. Science of The Total Environment, 584–585, 1040–1055. https://doi.org/10.1016/j.scitotenv.2017.01.158
+
+Kumar, P., et al. (2024). Urban heat mitigation by green and blue infrastructure: Drivers, effectiveness, and future needs. Environmental Challenges, 11, 100263. https://doi.org/10.1016/j.envc.2024.100263
+
+Liu, Z., Zhang, W., & Tang, Q. (2024). Remote sensing of water bodies in urban areas using MNDWI: Implications for mitigating the urban heat island effect. Scientific Reports, 14, Article 2399. https://doi.org/10.1038/s41598-025-86199-1
+
+Norton, B. A., Coutts, A. M., Livesley, S. J., Harris, R. J., Hunter, A. M., & Williams, N. S. G. (2015). Planning for cooler cities: A framework to prioritise green infrastructure to mitigate high temperatures in urban landscapes. Landscape and Urban Planning, 134, 127–138. https://doi.org/10.1016/j.landurbplan.2014.10.018
+
+Qin, Z., Li, W., Li, Y., Zhao, S., Yang, L., & Zhang, L. (2018). Impacts of vegetation coverage and urbanization on urban heat islands: An empirical study based on remote sensing data. Journal of Geographical Sciences, 28(12), 1903–1916. https://doi.org/10.1007/s11707-018-0729-5
+
+Weng, Q., Lu, D., & Schubring, J. (2004). Estimation of land surface temperature–vegetation abundance relationship for urban heat island studies. Remote Sensing of Environment, 89(4), 467–483. https://www.researchgate.net/publication/222550615_Comparison_of_impervious_surface_area_and_Normalized_Difference_Vegetation_Index_as_indicators_of_surface_Urban_Heat_Island_effects_in_Landsat_Imagery
